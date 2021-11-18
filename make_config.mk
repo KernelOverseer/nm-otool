@@ -17,7 +17,7 @@ AR = ar
 AR_FLAGS = rc
 RANLIB = ranlib
 RANLIB_FLAGS =
-FLAGS = -g -Wall -Werror -Wextra
+FLAGS = #-g -Wall -Werror -Wextra
 
 #directories and paths
 
