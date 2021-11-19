@@ -71,11 +71,27 @@ static void	debug_print_section_name(struct nm_file *file, int index)
 	printf("name : %s\n", str);
 }
 
-static void elf_debug_section_headers_32(Elf32_Shdr *header)
+static void elf_debug_section_32(Elf32_Shdr *header, struct nm_file *file)
+{
+	Elf32_Sym	*symbol;
+
+	printf("================== SYMBOL TABLE ====================\n");
+	symbol = file->mem + header->sh_offset;
+	printf("%-10.10s : %u\n", "shndx", symbol->st_shndx);
+//	printf("%-10.10s : %u\n", "name", symbol->st_name);
+//	if (symbol->st_name != 0)
+//		debug_print_section_name(file, symbol->st_name);
+}
+
+static void elf_debug_section_headers_32(Elf32_Shdr *header, struct nm_file *file)
 {
 	printf("==================    section   ====================\n");
 	printf("%-10.10s : %u\n", "type", header->sh_type);
 	print_section_type(header->sh_type);
+	if (header->sh_type == SHT_REL || header->sh_type == SHT_RELA)
+	{
+		elf_debug_section_32(header, file);
+	}
 }
 
 static void elf_debug_header_32(Elf32_Ehdr *header)
@@ -105,7 +121,7 @@ static void	elf_debug_all_section_headers(struct nm_file *file)
 		Elf32_Shdr	*header;
 
 		header = (Elf32_Shdr *)(file->mem + offset);
-		elf_debug_section_headers_32(header);
+		elf_debug_section_headers_32(header, file);
 		offset += file->header.elf32.e_shentsize;
 		debug_print_section_name(file, header->sh_name);
 	}	
