@@ -51,7 +51,7 @@ int	elf_parse_header(struct nm_file *file)
 		return (err);
 	if ((err = elf_verify_header_id(file)))
 		return (err);
-	elf_debug_identifier(file);
+//	elf_debug_identifier(file);
 	if ((err = elf_parse_header_after_id(file)))
 		return (err);
 	return (NO_ERROR);
